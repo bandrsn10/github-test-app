@@ -1,19 +1,10 @@
 import fetch from 'node-fetch';
 
-type User = {
-    id: number;
-    email: string;
-    first_name: string;
-};
-
-type GetUsersResponse = {
-    data: User[];
-};
-
-async function getUsers(): Promise<GetUsersResponse> {
+const GITHUB_API_URL = 'https://api.github.com/'
+async function getRepositories(): Promise<any> {
     try {
         // 👇️ const response: Response
-        const response = await fetch('https://reqres.in/api/users', {
+        const response = await fetch(GITHUB_API_URL + 'users/defunkt', {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -25,7 +16,7 @@ async function getUsers(): Promise<GetUsersResponse> {
         }
 
         // 👇️ const result: GetUsersResponse
-        const result = (await response.json()) as GetUsersResponse;
+        const result = (await response.json());
 
         console.log('result is: ', JSON.stringify(result, null, 4));
 
@@ -41,7 +32,7 @@ async function getUsers(): Promise<GetUsersResponse> {
     }
 }
 
-getUsers();
+getRepositories();
 
 console.log('hey there!');
 console.log(process.env.GITHUB_TOKEN);
