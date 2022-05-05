@@ -10,7 +10,7 @@ type GetUsersResponse = {
     data: User[];
 };
 
-async function getUsers(): Promise<any> {
+async function getUsers(): Promise<GetUsersResponse> {
     try {
         // 👇️ const response: Response
         const response = await fetch('https://reqres.in/api/users', {
@@ -33,10 +33,10 @@ async function getUsers(): Promise<any> {
     } catch (error) {
         if (error instanceof Error) {
             console.log('error message: ', error.message);
-            return error.message;
+            throw error.message;
         } else {
             console.log('unexpected error: ', error);
-            return 'An unexpected error occurred';
+            throw 'An unexpected error occurred';
         }
     }
 }
