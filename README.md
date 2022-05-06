@@ -2,6 +2,7 @@
 
 ## Links 
 [Typescript API tutorial] (https://bobbyhadz.com/blog/typescript-http-request)
+[URL Search Params help] (https://usefulangle.com/post/91/nodejs-get-url-parameters)
 ## Task
 For the coding task, we'll build a tool to analyze pull request traffic for a Github organization.
 
