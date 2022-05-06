@@ -1,49 +1,40 @@
-import fetch from 'node-fetch';
+import axios from 'axios';
+import * as _ from 'lodash';
 
 const GITHUB_API_URL = 'https://api.github.com/'
-const ORG = 'RAMDA'
 
-type Repository = {
+
+interface Repository {
     full_name: string;
     name: string;
 }
 
-type GetRepositoryResponse = {
-    data: Repository[];
-  };
-
-async function main(): Promise<void> {  
-    const repositories = await getRepositories();
-    console.log(repositories);
-    console.log('hey there!');
-    console.log(process.env.GITHUB_TOKEN);
-    //set constant variable for Ramda org
-    
-    //call the API
-
+interface PullRequest {
+    id: string;
+    number: string;
 }
 
-async function getRepositories(): Promise<GetRepositoryResponse> {
+async function main(): Promise<void> {  
+    const ORG = 'RAMDA'
+    const repositories = await getRepositories(ORG);
+    //now that we have the repositories, need to loop through each one to get pull requests
+    for (var repo of repositories) {
+        let pr = await getPullRequestsforOrg(ORG, repo.name);
+
+        console.log(pr.length);
+    }
+
+    console.log(repositories[0]);
+    console.log('hey there!');
+    console.log(process.env.GITHUB_TOKEN);
+}
+
+async function getRepositories(org: string): Promise<Repository[]> {
     try {
-        // 👇️ const response: Response
-        const response = await fetch(GITHUB_API_URL + 'orgs/'+ ORG + '/repos', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-            },
-        });
-        
-
-        if (!response.ok) {
-            throw new Error(`Error! status: ${response.status}`);
-        }
-
-        // 👇️ const result: GetUsersResponse
-        const result = (await response.json()) as GetRepositoryResponse;
-        
-        //console.log('result is: ', JSON.stringify(result, null, 4));
-
-        return result;
+       
+        const response = await axios.get(GITHUB_API_URL + 'orgs/'+ org + '/repos');
+        return response.data;
+             
     } catch (error) {
         if (error instanceof Error) {
             console.log('error message: ', error.message);
@@ -54,5 +45,23 @@ async function getRepositories(): Promise<GetRepositoryResponse> {
         }
     }
 }
+
+async function getPullRequestsforOrg(org: string, repoName: string): Promise<PullRequest[]> {
+    try {
+        const response = await axios.get(GITHUB_API_URL + 'repos/'+ org + '/' + repoName + '/pulls?state=all');
+        return response.data;
+             
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log('error message: ', error.message);
+            throw error.message;
+        } else {
+            console.log('unexpected error: ', error);
+            throw 'An unexpected error occurred';
+        }
+    }
+
+}
+
 main();
 ///repos/ramda/eslint-plugin-ramda/pulls?state=all
