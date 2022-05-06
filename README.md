@@ -26,3 +26,13 @@ Let us know how many pull requests your project retrieves
 Push your project to your Github account and send us a link to the repo - or if you'd rather not have it on your Github account, a link to Dropbox or an emailed zip file is fine, too
 If you use a framework that generates boilerplate code, let us know which parts of the project to focus on
 Drop the link into the slack channel that you have been invited to
+
+## How to Run
+``` sh 
+# Turn on TypeScript watcher
+cd src
+tsc index.ts -w
+# Open a new terminal and run the following:
+cd src
+node .\index.js
+```
