@@ -3,7 +3,9 @@
 ## Links 
 [Typescript API tutorial] (https://bobbyhadz.com/blog/typescript-http-request)
 [URL Search Params help] (https://usefulangle.com/post/91/nodejs-get-url-parameters)
+
 ## Task
+
 For the coding task, we'll build a tool to analyze pull request traffic for a Github organization.
 
 For the part you do on your own: write some code that will retrieve every pull request for the Ramda organization using the Github web API and store the results in memory. When we pair, we will use this collection of pull requests for analysis of things like patterns across PRs of different statuses. For example, we might answer a question like "how many pull requests were merged week over week across the organization?”
