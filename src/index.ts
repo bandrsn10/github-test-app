@@ -1,7 +1,5 @@
 import axios from 'axios';
-import * as _ from 'lodash';
-import * as linkHeader from 'http-link-header';
-import * as url from 'url';
+import { parse } from 'http-link-header';
 
 const GITHUB_API_URL = 'https://api.github.com/'
 
@@ -23,7 +21,7 @@ async function main(): Promise<void> {
 
     //now that we have the repositories, need to loop through each one to get pull requests
     let totalAmountOfPullRequests = 0;
-    let repoIndex  = 1;
+    let repoIndex = 1;
     for (var repo of repositories) {
         console.log('Getting Pull Requests for repository ' + repoIndex + ' of ' + repositories.length);
         let pr = await getPullRequestsById(repo.id);
@@ -74,7 +72,7 @@ async function getPullRequestsById(id: number, page?: number): Promise<PullReque
 
         //check for link key value pair (next and last) to know total amount of pages to call recursively
         if (response.headers.link) {
-            const link = linkHeader.parse(response.headers.link);
+            const link = parse(response.headers.link);
             if (link.rel('next') && (link.rel('next').length)) {
 
                 //get next page for recursive call
