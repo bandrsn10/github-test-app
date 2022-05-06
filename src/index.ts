@@ -5,7 +5,6 @@ import * as url from 'url';
 
 const GITHUB_API_URL = 'https://api.github.com/'
 
-
 interface Repository {
     id: number;
     full_name: string;
@@ -21,18 +20,20 @@ interface PullRequest {
 async function main(): Promise<void> {
     const ORG = 'RAMDA'
     const repositories = await getRepositories(ORG);
+
     //now that we have the repositories, need to loop through each one to get pull requests
-    //const repo = repositories[0];
+    let totalAmountOfPullRequests = 0;
+    let repoIndex  = 1;
     for (var repo of repositories) {
+        console.log('Getting Pull Requests for repository ' + repoIndex + ' of ' + repositories.length);
         let pr = await getPullRequestsById(repo.id);
 
         repo.amountOfPullRequests = pr.length;
         console.log(repo.full_name + ' has ' + repo.amountOfPullRequests + ' pull requests');
+        totalAmountOfPullRequests += repo.amountOfPullRequests;
+        repoIndex++;
     }
-
-    //console.log(repositories[0]);
-    //console.log('hey there!');
-    //console.log(process.env.GITHUB_TOKEN);
+    console.log(ORG + ' has ' + totalAmountOfPullRequests + ' total pull requests');
 }
 
 async function getRepositories(org: string): Promise<Repository[]> {
@@ -110,4 +111,3 @@ async function getPullRequestsById(id: number, page?: number): Promise<PullReque
 }
 
 main();
-///repos/ramda/eslint-plugin-ramda/pulls?state=all
